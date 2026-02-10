@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
         <div class="header">
             <h1>🧠 Klasifikasi Emosi Teks Indonesia</h1>
             <p>Artificial Neural Network dengan Backpropagation untuk Media Sosial</p>
+            <a href="index.html"
+                style="display: inline-block; margin-top: 10px; color: var(--primary); text-decoration: none; font-weight: 500;">🏠
+                Kembali ke Halaman Utama</a>
         </div>
 
         <!-- Upload Dataset Section -->
@@ -46,14 +51,14 @@
             <button class="btn btn-secondary" onclick="downloadTemplate()">
                 <span>📥 Download Template</span>
             </button>
-            
+
             <div id="uploadAlert" class="hidden"></div>
-            
+
             <!-- Statistics -->
             <div id="statisticsSection" class="hidden">
                 <h3 style="margin-top: 2rem; margin-bottom: 1rem;">📊 Statistik Dataset</h3>
                 <div class="stats-grid" id="statsGrid"></div>
-                
+
                 <div id="labelDistribution" style="margin-top: 1.5rem;">
                     <h4 style="margin-bottom: 1rem;">Distribusi Label</h4>
                     <div id="labelDistributionBars"></div>
@@ -83,9 +88,9 @@
             <button class="btn btn-primary" onclick="preprocessData()">
                 <span>⚙️ Proses Preprocessing</span>
             </button>
-            
+
             <div id="preprocessAlert" class="hidden"></div>
-            
+
             <!-- Preview -->
             <div id="preprocessPreview" class="hidden">
                 <h3 style="margin-top: 2rem; margin-bottom: 1rem;">👁️ Preview Hasil Preprocessing</h3>
@@ -107,7 +112,7 @@
                     <input type="number" id="learningRate" value="0.01" min="0.001" max="1" step="0.001">
                 </div>
             </div>
-            
+
             <div class="grid-2">
                 <div class="form-group">
                     <label for="epochs">Epochs</label>
@@ -118,7 +123,7 @@
                     <input type="number" id="batchSize" value="32" min="8" max="128" step="8">
                 </div>
             </div>
-            
+
             <div class="grid-2">
                 <div class="form-group">
                     <label for="activation">Fungsi Aktivasi</label>
@@ -133,16 +138,16 @@
                     <input type="number" id="testSize" value="20" min="10" max="40" step="5">
                 </div>
             </div>
-            
+
             <button class="btn btn-success" onclick="trainModel()">
                 <span>🚀 Mulai Training</span>
             </button>
             <button class="btn btn-secondary" onclick="saveModel()">
                 <span>💾 Simpan Model</span>
             </button>
-            
+
             <div id="trainingAlert" class="hidden"></div>
-            
+
             <!-- Training Progress -->
             <div id="trainingProgress" class="hidden">
                 <h3 style="margin-top: 2rem; margin-bottom: 1rem;">📈 Progress Training</h3>
@@ -150,7 +155,7 @@
                     <div class="progress-fill" id="progressFill" style="width: 0%"></div>
                 </div>
                 <p id="progressText" style="text-align: center; margin-top: 0.5rem; color: var(--text-muted);"></p>
-                
+
                 <!-- Training Charts -->
                 <div id="chartsSection" class="hidden" style="margin-top: 2rem;">
                     <div class="grid-2">
@@ -169,17 +174,17 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Evaluation Results -->
             <div id="evaluationSection" class="hidden">
                 <h3 style="margin-top: 2rem; margin-bottom: 1rem;">📊 Hasil Evaluasi Model</h3>
                 <div class="stats-grid" id="evaluationStats"></div>
-                
+
                 <div id="confusionMatrixSection" style="margin-top: 1.5rem;">
                     <h4 style="margin-bottom: 1rem;">Confusion Matrix</h4>
                     <div class="confusion-matrix" id="confusionMatrix"></div>
                 </div>
-                
+
                 <div id="classificationReport" style="margin-top: 1.5rem;">
                     <h4 style="margin-bottom: 1rem;">Classification Report</h4>
                     <div id="reportContent"></div>
@@ -197,9 +202,9 @@
             <button class="btn btn-primary" onclick="predictEmotion()">
                 <span>🎯 Prediksi Emosi</span>
             </button>
-            
+
             <div id="predictionAlert" class="hidden"></div>
-            
+
             <!-- Prediction Result -->
             <div id="predictionResult" class="hidden">
                 <h3 style="margin-top: 2rem; margin-bottom: 1rem;">📋 Hasil Prediksi</h3>
@@ -210,7 +215,8 @@
                     </div>
                     <div style="margin-bottom: 1rem;">
                         <strong>Teks Setelah Preprocessing:</strong>
-                        <p id="preprocessedText" style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.9rem;"></p>
+                        <p id="preprocessedText"
+                            style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.9rem;"></p>
                     </div>
                     <div style="margin-bottom: 1rem;">
                         <strong>Prediksi Emosi:</strong>
@@ -235,4 +241,5 @@
     <!-- Main App Script -->
     <script src="app.js"></script>
 </body>
+
 </html>
