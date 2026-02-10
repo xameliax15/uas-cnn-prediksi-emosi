@@ -3,7 +3,9 @@
  * Frontend JavaScript
  */
 
-const API_URL = 'https://xameliax15.pythonanywhere.com';
+const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:5000'
+    : 'https://xameliax15.pythonanywhere.com';
 
 let lossChart = null;
 let accuracyChart = null;
