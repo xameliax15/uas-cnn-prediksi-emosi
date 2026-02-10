@@ -14,11 +14,13 @@ from ann_model import ANNClassifier
 from text_preprocessing import IndonesianTextPreprocessor, analyze_text_statistics
 from data_manager import DataManager
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend', static_url_path='')
 CORS(app)  # Enable CORS for frontend
 
 # Configuration
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Frontend dir relative to backend/
+FRONTEND_DIR = os.path.join(BASE_DIR, '..', 'frontend')
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
 MODEL_FOLDER = os.path.join(BASE_DIR, 'models')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -70,6 +72,24 @@ load_pretrained_on_startup()
 
 @app.route('/')
 def index():
+    """Serve Prediction Interface"""
+    return send_file(os.path.join(FRONTEND_DIR, 'index.html'))
+
+@app.route('/admin')
+@app.route('/admin.html')
+def admin():
+    """Serve Admin Dashboard"""
+    return send_file(os.path.join(FRONTEND_DIR, 'admin.html'))
+
+@app.route('/<path:path>')
+def serve_static(path):
+    """Serve other static files"""
+    if os.path.exists(os.path.join(FRONTEND_DIR, path)):
+        return send_file(os.path.join(FRONTEND_DIR, path))
+    return jsonify({'error': 'Not found'}), 404
+
+@app.route('/api/status')
+def api_status():
     """API status"""
     return jsonify({
         'status': 'running',
