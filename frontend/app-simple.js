@@ -190,7 +190,7 @@ window.addEventListener('load', () => {
 // Check server status on load
 async function checkServerStatus() {
     try {
-        const response = await fetch(`${API_URL}/`);
+        const response = await fetch(`${API_URL}/api/status`);
         const data = await response.json();
         console.log('✅ Server status:', data);
     } catch (error) {
