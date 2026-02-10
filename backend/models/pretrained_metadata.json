@@ -1,0 +1,24 @@
+{
+  "emotion_labels": [
+    "jijik",
+    "marah",
+    "netral",
+    "sedih",
+    "senang",
+    "takut",
+    "terkejut"
+  ],
+  "input_size": 2000,
+  "output_size": 7,
+  "test_accuracy": 0.7036747458952306,
+  "total_samples": 8521,
+  "architecture": {
+    "hidden_layers": [
+      256,
+      128
+    ],
+    "activation": "relu",
+    "learning_rate": 0.01,
+    "epochs": 150
+  }
+}
