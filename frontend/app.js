@@ -3,7 +3,7 @@
  * Frontend JavaScript
  */
 
-const API_URL = 'http://localhost:5000';
+const API_URL = 'https://xameliax15.pythonanywhere.com';
 
 let lossChart = null;
 let accuracyChart = null;
@@ -13,27 +13,27 @@ async function uploadDataset() {
     const fileInput = document.getElementById('datasetFile');
     const textColumn = document.getElementById('textColumn').value;
     const labelColumn = document.getElementById('labelColumn').value;
-    
+
     if (!fileInput.files.length) {
         showAlert('uploadAlert', 'Silakan pilih file dataset terlebih dahulu', 'error');
         return;
     }
-    
+
     const formData = new FormData();
     formData.append('file', fileInput.files[0]);
     formData.append('text_column', textColumn);
     formData.append('label_column', labelColumn);
-    
+
     showAlert('uploadAlert', 'Mengupload dataset...', 'info');
-    
+
     try {
         const response = await fetch(`${API_URL}/api/upload`, {
             method: 'POST',
             body: formData
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
             showAlert('uploadAlert', data.message, 'success');
             displayStatistics(data.statistics);
@@ -49,7 +49,7 @@ async function uploadDataset() {
 function displayStatistics(stats) {
     const statsGrid = document.getElementById('statsGrid');
     const labelDistributionBars = document.getElementById('labelDistributionBars');
-    
+
     statsGrid.innerHTML = `
         <div class="stat-card">
             <div class="stat-label">Total Sampel</div>
@@ -68,11 +68,11 @@ function displayStatistics(stats) {
             <div class="stat-value">${stats.max_text_length}</div>
         </div>
     `;
-    
+
     // Label distribution
     const distribution = stats.emotion_distribution;
     const maxCount = Math.max(...Object.values(distribution));
-    
+
     let distributionHTML = '';
     for (const [label, count] of Object.entries(distribution)) {
         const percentage = (count / maxCount) * 100;
@@ -87,7 +87,7 @@ function displayStatistics(stats) {
             </div>
         `;
     }
-    
+
     labelDistributionBars.innerHTML = distributionHTML;
     document.getElementById('statisticsSection').classList.remove('hidden');
 }
@@ -97,9 +97,9 @@ async function preprocessData() {
     const maxFeatures = parseInt(document.getElementById('maxFeatures').value);
     const useStemming = document.getElementById('useStemming').checked;
     const useStopwords = document.getElementById('useStopwords').checked;
-    
+
     showAlert('preprocessAlert', 'Memproses preprocessing...', 'info');
-    
+
     try {
         const response = await fetch(`${API_URL}/api/preprocess`, {
             method: 'POST',
@@ -112,9 +112,9 @@ async function preprocessData() {
                 use_stopword_removal: useStopwords
             })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
             showAlert('preprocessAlert', data.message, 'success');
             displayPreprocessPreview(data.preview);
@@ -129,7 +129,7 @@ async function preprocessData() {
 // Display Preprocess Preview
 function displayPreprocessPreview(preview) {
     const previewContent = document.getElementById('previewContent');
-    
+
     let html = '';
     preview.forEach((item, index) => {
         html += `
@@ -145,7 +145,7 @@ function displayPreprocessPreview(preview) {
             </div>
         `;
     });
-    
+
     previewContent.innerHTML = html;
     document.getElementById('preprocessPreview').classList.remove('hidden');
 }
@@ -159,17 +159,17 @@ async function trainModel() {
     const batchSize = parseInt(document.getElementById('batchSize').value);
     const activation = document.getElementById('activation').value;
     const testSize = parseInt(document.getElementById('testSize').value) / 100;
-    
+
     showAlert('trainingAlert', 'Memulai training model...', 'info');
     document.getElementById('trainingProgress').classList.remove('hidden');
-    
+
     // Simulate progress
     let progress = 0;
     const progressInterval = setInterval(() => {
         progress = Math.min(progress + 1, 95);
         updateProgress(progress, `Training epoch... ${progress}%`);
     }, (epochs * 100) / 95);  // Approximate timing
-    
+
     try {
         const response = await fetch(`${API_URL}/api/train`, {
             method: 'POST',
@@ -186,12 +186,12 @@ async function trainModel() {
                 val_size: 0.1
             })
         });
-        
+
         clearInterval(progressInterval);
         updateProgress(100, 'Training selesai!');
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
             showAlert('trainingAlert', data.message, 'success');
             displayTrainingResults(data);
@@ -214,18 +214,18 @@ function updateProgress(percentage, text) {
 function displayTrainingResults(data) {
     const history = data.history;
     const evaluation = data.evaluation;
-    
+
     // Show charts section
     document.getElementById('chartsSection').classList.remove('hidden');
-    
+
     // Create Loss Chart
     const lossCtx = document.getElementById('lossChart').getContext('2d');
     if (lossChart) lossChart.destroy();
-    
+
     lossChart = new Chart(lossCtx, {
         type: 'line',
         data: {
-            labels: Array.from({length: history.loss.length}, (_, i) => i + 1),
+            labels: Array.from({ length: history.loss.length }, (_, i) => i + 1),
             datasets: [
                 {
                     label: 'Training Loss',
@@ -265,15 +265,15 @@ function displayTrainingResults(data) {
             }
         }
     });
-    
+
     // Create Accuracy Chart
     const accCtx = document.getElementById('accuracyChart').getContext('2d');
     if (accuracyChart) accuracyChart.destroy();
-    
+
     accuracyChart = new Chart(accCtx, {
         type: 'line',
         data: {
-            labels: Array.from({length: history.accuracy.length}, (_, i) => i + 1),
+            labels: Array.from({ length: history.accuracy.length }, (_, i) => i + 1),
             datasets: [
                 {
                     label: 'Training Accuracy',
@@ -315,7 +315,7 @@ function displayTrainingResults(data) {
             }
         }
     });
-    
+
     // Display Evaluation Stats
     displayEvaluation(evaluation, data.data_split);
 }
@@ -323,7 +323,7 @@ function displayTrainingResults(data) {
 // Display Evaluation
 function displayEvaluation(evaluation, dataSplit) {
     const evaluationStats = document.getElementById('evaluationStats');
-    
+
     evaluationStats.innerHTML = `
         <div class="stat-card">
             <div class="stat-label">Test Accuracy</div>
@@ -342,26 +342,26 @@ function displayEvaluation(evaluation, dataSplit) {
             <div class="stat-value">${dataSplit.test_samples}</div>
         </div>
     `;
-    
+
     // Confusion Matrix
     displayConfusionMatrix(evaluation.confusion_matrix, evaluation.classification_report);
-    
+
     // Classification Report
     displayClassificationReport(evaluation.classification_report);
-    
+
     document.getElementById('evaluationSection').classList.remove('hidden');
 }
 
 // Display Confusion Matrix
 function displayConfusionMatrix(matrix, report) {
     const labels = Object.keys(report).filter(key => !['accuracy', 'macro avg', 'weighted avg'].includes(key));
-    
+
     let html = '<table><thead><tr><th></th>';
     labels.forEach(label => {
         html += `<th>${label}</th>`;
     });
     html += '</tr></thead><tbody>';
-    
+
     matrix.forEach((row, i) => {
         html += `<tr><th>${labels[i]}</th>`;
         row.forEach(value => {
@@ -369,16 +369,16 @@ function displayConfusionMatrix(matrix, report) {
         });
         html += '</tr>';
     });
-    
+
     html += '</tbody></table>';
-    
+
     document.getElementById('confusionMatrix').innerHTML = html;
 }
 
 // Display Classification Report
 function displayClassificationReport(report) {
     const labels = Object.keys(report).filter(key => !['accuracy', 'macro avg', 'weighted avg'].includes(key));
-    
+
     let html = '<table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">';
     html += '<thead><tr><th style="text-align: left; padding: 0.75rem; background: rgba(99, 102, 241, 0.2); border: 1px solid var(--border);">Label</th>';
     html += '<th style="text-align: center; padding: 0.75rem; background: rgba(99, 102, 241, 0.2); border: 1px solid var(--border);">Precision</th>';
@@ -386,7 +386,7 @@ function displayClassificationReport(report) {
     html += '<th style="text-align: center; padding: 0.75rem; background: rgba(99, 102, 241, 0.2); border: 1px solid var(--border);">F1-Score</th>';
     html += '<th style="text-align: center; padding: 0.75rem; background: rgba(99, 102, 241, 0.2); border: 1px solid var(--border);">Support</th></tr></thead>';
     html += '<tbody>';
-    
+
     labels.forEach(label => {
         const metrics = report[label];
         html += `<tr>
@@ -397,23 +397,23 @@ function displayClassificationReport(report) {
             <td style="text-align: center; padding: 0.75rem; border: 1px solid var(--border); background: rgba(99, 102, 241, 0.05);">${metrics.support}</td>
         </tr>`;
     });
-    
+
     html += '</tbody></table>';
-    
+
     document.getElementById('reportContent').innerHTML = html;
 }
 
 // Predict Emotion
 async function predictEmotion() {
     const text = document.getElementById('predictionText').value;
-    
+
     if (!text.trim()) {
         showAlert('predictionAlert', 'Silakan masukkan teks terlebih dahulu', 'error');
         return;
     }
-    
+
     showAlert('predictionAlert', 'Memprediksi emosi...', 'info');
-    
+
     try {
         const response = await fetch(`${API_URL}/api/predict`, {
             method: 'POST',
@@ -422,9 +422,9 @@ async function predictEmotion() {
             },
             body: JSON.stringify({ text })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
             showAlert('predictionAlert', 'Prediksi berhasil!', 'success');
             displayPredictionResult(text, data);
@@ -442,11 +442,11 @@ function displayPredictionResult(text, data) {
     document.getElementById('preprocessedText').textContent = data.preprocessed_text;
     document.getElementById('predictedEmotion').textContent = data.prediction.toUpperCase();
     document.getElementById('confidence').textContent = `${(data.confidence * 100).toFixed(2)}%`;
-    
+
     // Probability bars
     const probabilityBars = document.getElementById('probabilityBars');
     let barsHTML = '';
-    
+
     for (const [emotion, prob] of Object.entries(data.probabilities)) {
         const percentage = prob * 100;
         barsHTML += `
@@ -460,7 +460,7 @@ function displayPredictionResult(text, data) {
             </div>
         `;
     }
-    
+
     probabilityBars.innerHTML = barsHTML;
     document.getElementById('predictionResult').classList.remove('hidden');
 }
@@ -468,14 +468,14 @@ function displayPredictionResult(text, data) {
 // Save Model
 async function saveModel() {
     showAlert('trainingAlert', 'Menyimpan model...', 'info');
-    
+
     try {
         const response = await fetch(`${API_URL}/api/save_model`, {
             method: 'POST'
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
             showAlert('trainingAlert', `Model berhasil disimpan! Files: ${data.files.model}`, 'success');
         } else {
@@ -499,19 +499,19 @@ async function downloadTemplate() {
 function showAlert(elementId, message, type) {
     const alertEl = document.getElementById(elementId);
     alertEl.className = `alert alert-${type}`;
-    
+
     const icon = {
         success: '✅',
         error: '❌',
         info: 'ℹ️'
     }[type] || 'ℹ️';
-    
+
     alertEl.innerHTML = `<span>${icon}</span><span>${message}</span>`;
     alertEl.classList.remove('hidden');
 }
 
 // File input change handler
-document.getElementById('datasetFile').addEventListener('change', function(e) {
+document.getElementById('datasetFile').addEventListener('change', function (e) {
     const fileName = e.target.files[0]?.name || 'Pilih file atau drag & drop di sini';
     document.getElementById('fileName').textContent = fileName;
 });

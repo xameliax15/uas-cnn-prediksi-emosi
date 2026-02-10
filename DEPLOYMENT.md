@@ -61,6 +61,39 @@ Aplikasi ini dapat di-deploy ke berbagai platform cloud (Render, Railway, Heroku
 6.  **Deploy**:
     Klik "Create Web Service". Render akan mulai build dan deploy aplikasi Anda.
 
+*> Catatan: Render "Free Tier" mungkin melakukan spin-down (tidur) jika tidak diakses selama 15 menit. Akses pertama akan lambat (cold start).*
+
+---
+
+## 🐍 Alternatif: PythonAnywhere (100% Gratis & Stabil)
+
+Jika Anda kesulitan dengan Render, **PythonAnywhere** adalah pilihan terbaik khusus Python.
+
+1.  **Daftar Akun**:
+    Buka `www.pythonanywhere.com` dan buat akun "Beginner" (Gratis).
+
+2.  **Upload Code**:
+    -   Buka tab **Files**.
+    -   Upload file `emotion_classification_app.zip` (yang sudah saya buatkan).
+    -   Unzip di console bash: `unzip emotion_classification_app.zip`.
+
+3.  **Install Dependencies**:
+    Buka **Bash Console** dan jalankan:
+    ```bash
+    pip install flask flask-cors numpy pandas scikit-learn Sastrawi openpyxl
+    ```
+
+4.  **Setup Web App**:
+    -   Buka tab **Web**.
+    -   Klik "Add a new web app".
+    -   Pilih **Flask** -> **Python 3.10** (atau terbaru).
+    -   Path: Sesuaikan dengan folder tempat Anda unzip (misal: `/home/username/mysite/backend/main.py`).
+
+5.  **Reload**:
+    Klik tombol hijau "Reload". Website Anda akan live di `username.pythonanywhere.com`!
+
+---
+
 ## Akses Aplikasi
 
 Setelah deployment selesai (biasanya 2-5 menit), Render akan memberikan URL public, misal:

@@ -1,6 +1,6 @@
 // Simplified JavaScript for Prediction-Only Interface
 
-const API_URL = 'http://localhost:5000';
+const API_URL = 'https://xameliax15.pythonanywhere.com';
 
 // Emotion to Emoji mapping
 const EMOTION_EMOJI = {
